@@ -1,0 +1,93 @@
+#include "stack.h"
+#include <iostream>
+
+/**
+ * @brief Конструктор узла стека
+ * @param value Значение узла
+ */
+Node::Node(int value) : data(value), next(nullptr) {}
+
+/**
+ * @brief Конструктор стека (инициализирует пустой стек)
+ */
+Stack::Stack() : top(nullptr) {}
+
+/**
+ * @brief Деструктор стека (автоматически очищает память)
+ */
+Stack::~Stack() {
+    ClearStack();
+}
+
+/**
+ * @brief Добавляет элемент на вершину стека
+ * @param value Значение для добавления
+ */
+void Stack::Push(int value) {
+    Node* newNode = new Node(value); // Создаем новый узел
+    newNode->next = top;            // Новый узел ссылается на текущую вершину
+    top = newNode;                  // Обновляем вершину стека
+    std::cout << "Элемент " << value << " добавлен в стек." << std::endl;
+}
+
+/**
+ * @brief Удаляет элемент с вершины стека
+ */
+void Stack::Pop() {
+    if (top == nullptr) {
+        std::cout << "Стек пуст! Невозможно удалить элемент." << std::endl;
+        return;
+    }
+    Node* temp = top;       // Сохраняем текущую вершину
+    top = top->next;        // Перемещаем вершину на следующий элемент
+    std::cout << "Элемент " << temp->data << " удален из стека." << std::endl;
+    delete temp;            // Освобождаем память
+}
+
+/**
+ * @brief Выводит содержимое стека
+ */
+void Stack::Print() {
+    if (top == nullptr) {
+        std::cout << "Стек пуст!" << std::endl;
+        return;
+    }
+    Node* current = top;
+    std::cout << "Элементы стека: ";
+    while (current != nullptr) {
+        std::cout << current->data << " ";
+        current = current->next;
+    }
+    std::cout << std::endl;
+}
+
+/**
+ * @brief Возвращает указатель на вершину стека
+ * @return Указатель на вершину стека
+ */
+Node* Stack::GetTop() {
+    return top;
+}
+
+/**
+ * @brief Очищает стек (удаляет все элементы)
+ */
+void Stack::ClearStack() {
+    while (top != nullptr) {
+        Node* temp = top;
+        top = top->next;
+        delete temp;
+    }
+    std::cout << "Стек очищен." << std::endl;
+}
+
+/**
+ * @brief Дружественная функция для добавления элемента и вывода адреса вершины
+ * @param stack Стек для модификации
+ * @param D Значение для добавления
+ */
+void AddElementAndPrintAddress(Stack& stack, int D) {
+    stack.Push(D);  // Добавляем элемент в стек
+    // Выводим адрес новой вершины
+    std::cout << "Адрес новой вершины стека: " << stack.GetTop() << std::endl; 
+}
